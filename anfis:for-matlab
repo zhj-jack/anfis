@@ -1,0 +1,28 @@
+核心操作如下：
+1.数据归一化
+2.用anfis和genfis2命令生成模型，或者用anfisedit工具箱生成.
+以工具箱生成的为例打点和分析：
+1.>> Fuzzy//导入你的模型到工作空间
+ 弹出的窗口 FILe-Import from file 然后 export to workspace 这样就把.fis 文件导入工作空间。
+2.>> load C:\Users\Administrator\Desktop\matlab\xunl.dat//按照你的训练集位置导入数据
+3.>> wdhfis=anfis(xunl,wdh,10);//按照你的模型开始训练10次，生成模型wdhfis
+4.对应导入你的测试数据
+>> load C:\Users\Administrator\Desktop\matlab\L.dat
+>> load C:\Users\Administrator\Desktop\matlab\Y.dat
+>> load C:\Users\Administrator\Desktop\matlab\ling.dat
+>> load C:\Users\Administrator\Desktop\matlab\yi.dat
+5.对应处理输入数据，因为你的22列是输出，所以只要1:21
+>> YP=Y(:,1:21);yiP=yi(:,1:21);
+>> lingp=ling(:,1:21);
+6.用模型就行推理
+>> outpY=evalfis(YP,wdhfis);
+>> outpL=evalfis(LP,wdhfis);outpyi=evalfis(yiP,wdhfis);outpling=evalfis(lingp,wdhfis);
+7.打点
+>> subplot(2,1,1); //散点图布局，可以无视
+>> plot([1:1247],outpL,'r.',[1248:1373],outpY,'b*',[0,1373],[0.4,0.4]);//0.4阈值
+>> subplot(2,1,2);
+>> plot([1:408],outpling,'r.',[409:458],outpyi,'b*',[0,458],[0.4,0.4])
+>> subplot(2,1,1); 
+>> plot([1:1247],outpL,'r.',[1248:1373],outpY,'b*',[0,1373],[0.3,0.3]);//0.3阈值
+>> subplot(2,1,2);
+>> plot([1:408],outpling,'r.',[409:458],outpyi,'b*',[0,458],[0.3,0.3])
